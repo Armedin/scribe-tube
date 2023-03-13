@@ -1,5 +1,6 @@
 import { Box, Button, Typography } from '@mui/material';
 import ActionButton from './base/ActionButton';
+import FancyInput from './base/FancyInput';
 import ProductHuntBanner from './ProductHuntBanner';
 
 const IntroSection = () => {
@@ -20,7 +21,7 @@ const IntroSection = () => {
           textAlign: 'center',
           backgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
-          mb: 2,
+          mb: 4,
           backgroundImage:
             'linear-gradient(to right bottom, rgba(255, 255, 255, 1) 15%, rgba(255, 255, 255, 0.38) 100%)',
         }}
@@ -35,7 +36,7 @@ const IntroSection = () => {
           maxWidth: '48rem',
           mx: 'auto',
           fontWeight: 300,
-          fontSize: 21,
+          fontSize: 22,
           mb: 6,
         }}
       >
@@ -43,8 +44,9 @@ const IntroSection = () => {
         or download the transcript as a text file.
       </Typography>
 
-      <Box sx={{ maxWidth: 620, mx: 'auto', display: 'flex', gap: 2 }}>
-        <Box
+      <Box sx={{ maxWidth: 720, mx: 'auto', display: 'flex', gap: 2 }}>
+        <FancyInput placeholder="www.youtube.com/watch?v=xxxxxxxx" />
+        {/* <Box
           sx={{
             width: '100%',
             borderRadius: '10px',
@@ -60,7 +62,7 @@ const IntroSection = () => {
           <Typography sx={{ color: 'rgb(124 124 124)', fontSize: 16 }}>
             https://www.youtube.com/watch?v=696cmfqz0t8
           </Typography>
-        </Box>
+        </Box> */}
         <ActionButton>Transcribe video</ActionButton>
       </Box>
 
