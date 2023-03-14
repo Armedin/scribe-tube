@@ -1,9 +1,35 @@
 import { Box, Button, Typography } from '@mui/material';
+import { useState } from 'react';
 import ActionButton from './base/ActionButton';
 import FancyInput from './base/FancyInput';
 import ProductHuntBanner from './ProductHuntBanner';
+import matchYoutubeUrl from '@/utils/match-youtube-link';
+import { useRouter } from 'next/router';
 
 const IntroSection = () => {
+  const [youtubeLink, setYoutubeLink] = useState('');
+  const router = useRouter();
+
+  const handleInputChange = (e: any) => {
+    setYoutubeLink(e.target.value);
+  };
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    if (!matchYoutubeUrl(youtubeLink)) {
+      alert('Please enter a valid youtube link');
+    }
+
+    let youtubeId = '';
+    if (youtubeLink.includes('be/')) {
+      youtubeId = youtubeLink.split('be/')[1];
+    } else {
+      youtubeId = youtubeLink.split('?v=')[1];
+    }
+
+    router.push(`/v/${youtubeId}`);
+  };
+
   return (
     <Box
       sx={{
@@ -31,7 +57,7 @@ const IntroSection = () => {
 
       <Typography
         sx={{
-          color: '#a1a4aa',
+          color: 'var(--colors-gray11)',
           textAlign: 'center',
           maxWidth: '48rem',
           mx: 'auto',
@@ -44,26 +70,17 @@ const IntroSection = () => {
         or download the transcript as a text file.
       </Typography>
 
-      <Box sx={{ maxWidth: 720, mx: 'auto', display: 'flex', gap: 2 }}>
-        <FancyInput placeholder="www.youtube.com/watch?v=xxxxxxxx" />
-        {/* <Box
-          sx={{
-            width: '100%',
-            borderRadius: '10px',
-            padding: '8px 16px',
-            display: 'flex',
-            alignItems: 'center',
-            boxShadow:
-              'rgb(0 0 0 / 25%) 0px 4px 4px 0px, rgb(255 255 255 / 32%) 0px 1px 0px 0px inset',
-            background: 'linear-gradient(to bottom, #0e0f14 10%, #1e1e23 100%)',
-            height: 56,
-          }}
-        >
-          <Typography sx={{ color: 'rgb(124 124 124)', fontSize: 16 }}>
-            https://www.youtube.com/watch?v=696cmfqz0t8
-          </Typography>
-        </Box> */}
-        <ActionButton>Transcribe video</ActionButton>
+      <Box
+        component="form"
+        sx={{ maxWidth: 720, mx: 'auto', display: 'flex', gap: 2 }}
+        onSubmit={handleSubmit}
+      >
+        <FancyInput
+          placeholder="www.youtube.com/watch?v=xxxxxxxx"
+          onChange={handleInputChange}
+          value={youtubeLink}
+        />
+        <ActionButton type="submit">Transcribe video</ActionButton>
       </Box>
 
       <Box
