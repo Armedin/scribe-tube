@@ -2,9 +2,12 @@ import Skeleton from '@/components/base/Skeleton';
 import { Box, Container, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import NormalTranscript from '@/components/transcript/NormalTranscript';
 import { Video } from '@/interfaces/video';
+import { formatCount } from '@/utils/format-count';
+import LabelPill from '@/components/base/LabelPill';
+import { removeNewLines, wordsCount } from '@/utils/text-readibility';
 
 const VideoTranscript = () => {
   const router = useRouter();
@@ -28,6 +31,19 @@ const VideoTranscript = () => {
       });
   }, [id]);
 
+  const transcriptText = useMemo(() => {
+    if (!videoData) {
+      return '';
+    }
+
+    let text = '';
+    for (var i in videoData.subs) {
+      text += removeNewLines(videoData.subs[i].text) + ' ';
+    }
+
+    return text;
+  }, [videoData]);
+
   const thumbnail =
     videoData?.videoDetails.thumbnail.thumbnails[
       videoData.videoDetails.thumbnail.thumbnails.length - 1
@@ -41,13 +57,13 @@ const VideoTranscript = () => {
         background: '#0b0d0f',
       }}
     >
-      <Container maxWidth="xl">
+      <Container>
         <Box sx={{ display: 'flex', gap: 8 }}>
           <Box sx={{ flexShrink: 0 }}>
             {loading && (
               <>
                 <Skeleton height={340} width={600} />
-                <Box sx={{ display: 'flex', gap: 1, mt: 1.5 }}>
+                <Box sx={{ display: 'flex', gap: 1, mt: 1 }}>
                   <Skeleton variant="pill" width={80} height={20} />
                   <Skeleton variant="pill" width={80} height={20} />
                   <Skeleton variant="pill" width={80} height={20} />
@@ -55,15 +71,38 @@ const VideoTranscript = () => {
               </>
             )}
             {!loading && (
-              <Box
-                sx={{
-                  width: 600,
-                  height: 340,
-                  img: { width: '100%', height: '100%', objectFit: 'cover' },
-                }}
-              >
-                <img src={thumbnail?.url} />
-              </Box>
+              <>
+                <Box
+                  sx={{
+                    width: 600,
+                    height: 340,
+                    img: { width: '100%', height: '100%', objectFit: 'cover' },
+                  }}
+                >
+                  <img src={thumbnail?.url} />
+                </Box>
+                <Box sx={{ display: 'flex', gap: 1, my: 1 }}>
+                  <LabelPill
+                    sx={{
+                      fontWeight: 400,
+                      textTransform: 'uppercase',
+                    }}
+                  >
+                    {formatCount(videoData?.videoDetails.viewCount)} views
+                  </LabelPill>
+                  <LabelPill
+                    sx={{
+                      fontWeight: 400,
+                      textTransform: 'uppercase',
+                    }}
+                  >
+                    {wordsCount(transcriptText)} words
+                  </LabelPill>
+                </Box>
+                {/* <Typography variant="h6">
+                  {videoData?.videoDetails.title}
+                </Typography> */}
+              </>
             )}
           </Box>
 

@@ -2,17 +2,17 @@ import { TranscriptSub } from '@/interfaces/transcript';
 import { Box, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import he from 'he';
-
-const capitaliseFirstLetter = (str: string) => {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-};
-
-const removeNewLines = (str: string) => {
-  return str.replace(/\r?\n|\r/g, ' ');
-};
+import {
+  capitaliseFirstLetter,
+  removeNewLines,
+} from '@/utils/text-readibility';
+import React from 'react';
+import { useOmnibar } from '../omnibar/OmnibarContext';
+import HighlightedText from '../omnibar/HighlightedText';
 
 const NormalTranscript = ({ subs }: { subs: TranscriptSub[] }) => {
   const [text, setText] = useState('');
+  const omnibar = useOmnibar();
 
   useEffect(() => {
     let counter = 0;
@@ -35,7 +35,14 @@ const NormalTranscript = ({ subs }: { subs: TranscriptSub[] }) => {
       <Typography
         sx={{ color: 'var(--colors-gray11)', whiteSpace: 'pre-line' }}
       >
-        {he.decode(text)}
+        {omnibar.isActive && omnibar.value ? (
+          <HighlightedText
+            text={he.decode(text)}
+            highlightTerm={omnibar.value}
+          />
+        ) : (
+          he.decode(text)
+        )}
       </Typography>
     </Box>
   );

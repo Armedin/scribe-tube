@@ -5,6 +5,8 @@ import FancyInput from './base/FancyInput';
 import ProductHuntBanner from './ProductHuntBanner';
 import matchYoutubeUrl from '@/utils/match-youtube-link';
 import { useRouter } from 'next/router';
+import ringsBg from '../assets/img/rings-bg.svg';
+import grid from '../assets/img/grid.svg';
 
 const IntroSection = () => {
   const [youtubeLink, setYoutubeLink] = useState('');
@@ -36,6 +38,10 @@ const IntroSection = () => {
         py: 20,
         minHeight: '100vh',
         background: '#0b0d0f',
+        // backgroundImage: `url(${grid.src})`,
+        // backgroundPosition: '50% 50%',
+        // backgroundRepeat: 'no-repeat',
+        // backgroundSize: 'cover',
       }}
     >
       <Box sx={{ mb: 2, mx: 1.5, display: 'flex', justifyContent: 'center' }}>
@@ -83,7 +89,7 @@ const IntroSection = () => {
         <ActionButton type="submit">Transcribe video</ActionButton>
       </Box>
 
-      <Box
+      {/* <Box
         sx={{
           mt: 18,
           width: 1200,
@@ -123,7 +129,7 @@ const IntroSection = () => {
         </Box>
 
         <img src="https://framerusercontent.com/images/H3bidclajEmo5RqMfI9zJ8dDG0.png" />
-      </Box>
+      </Box> */}
     </Box>
   );
 };
