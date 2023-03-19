@@ -32,9 +32,7 @@ const NormalTranscript = ({ subs }: { subs: TranscriptSub[] }) => {
 
   return (
     <Box>
-      <Typography
-        sx={{ color: 'var(--colors-gray11)', whiteSpace: 'pre-line' }}
-      >
+      <Box sx={{ color: 'var(--colors-gray11)', whiteSpace: 'pre-line' }}>
         {omnibar.isActive && omnibar.value ? (
           <HighlightedText
             text={he.decode(text)}
@@ -43,7 +41,7 @@ const NormalTranscript = ({ subs }: { subs: TranscriptSub[] }) => {
         ) : (
           he.decode(text)
         )}
-      </Typography>
+      </Box>
     </Box>
   );
 };

@@ -16,7 +16,9 @@ html {
   --colors-gray11: hsl(0 0% 62.8%);
   --colors-gray12: hsl(0 0% 93%);
 
-  --highlight-bg: hsl(43 100% 64%);
+  /* --highlight-bg: hsl(43 100% 64%); */
+  --highlight-bg: hsl(54 100% 68%);
+  --highlight-active-bg: hsl(24 100% 58.5%);
   --highlight-text: #000;
 }
 
