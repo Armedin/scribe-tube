@@ -25,7 +25,7 @@ const Omnibar = () => {
   const handleInputKeyDown = (e: any) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      if (matchCount <= 1) {
+      if (matchCount <= 0) {
         return;
       }
 
@@ -62,7 +62,7 @@ const Omnibar = () => {
 
   useEffect(() => {
     if (isActive) {
-      setHighlightIndex(0);
+      setHighlightIndex(-1);
       inputRef.current?.select();
     }
   }, [isActive]);

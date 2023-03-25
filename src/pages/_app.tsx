@@ -1,3 +1,4 @@
+import Layout from '@/components/Layout';
 import Omnibar from '@/components/omnibar/Omnibar';
 import { OmnibarProvider } from '@/components/omnibar/OmnibarContext';
 import { ThemeProvider, createTheme } from '@mui/material';
@@ -10,7 +11,9 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider theme={createTheme(theme)}>
       <OmnibarProvider>
-        <Component {...pageProps} />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
       </OmnibarProvider>
     </ThemeProvider>
   );

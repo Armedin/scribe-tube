@@ -1,47 +1,21 @@
-import { Box, Button, Typography } from '@mui/material';
-import { useState } from 'react';
+import { Box, Typography } from '@mui/material';
 import ActionButton from './base/ActionButton';
 import FancyInput from './base/FancyInput';
 import ProductHuntBanner from './ProductHuntBanner';
-import matchYoutubeUrl from '@/utils/match-youtube-link';
-import { useRouter } from 'next/router';
 import ringsBg from '../assets/img/rings-bg.svg';
 import grid from '../assets/img/grid.svg';
+import { useYoutubeForm } from '@/hooks/useYoutubeForm';
 
 const IntroSection = () => {
-  const [youtubeLink, setYoutubeLink] = useState('');
-  const router = useRouter();
-
-  const handleInputChange = (e: any) => {
-    setYoutubeLink(e.target.value);
-  };
-
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    if (!matchYoutubeUrl(youtubeLink)) {
-      alert('Please enter a valid youtube link');
-    }
-
-    let youtubeId = '';
-    if (youtubeLink.includes('be/')) {
-      youtubeId = youtubeLink.split('be/')[1];
-    } else {
-      youtubeId = youtubeLink.split('?v=')[1];
-    }
-
-    router.push(`/v/${youtubeId}`);
-  };
+  const { youtubeLink, handleInputChange, handleSubmit } = useYoutubeForm();
 
   return (
     <Box
       sx={{
-        py: 20,
-        minHeight: '100vh',
-        background: '#0b0d0f',
-        // backgroundImage: `url(${grid.src})`,
-        // backgroundPosition: '50% 50%',
-        // backgroundRepeat: 'no-repeat',
-        // backgroundSize: 'cover',
+        // backgroundImage: `url(${ringsBg.src})`,
+        backgroundPosition: '50% 50%',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
       }}
     >
       <Box sx={{ mb: 2, mx: 1.5, display: 'flex', justifyContent: 'center' }}>

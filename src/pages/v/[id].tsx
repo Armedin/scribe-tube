@@ -8,6 +8,8 @@ import { Video } from '@/interfaces/video';
 import { formatCount } from '@/utils/format-count';
 import LabelPill from '@/components/base/LabelPill';
 import { removeNewLines, wordsCount } from '@/utils/text-readibility';
+import ChannelDetails from '@/components/yt/ChannelDetails';
+import Metadata from '@/components/yt/Metadata';
 
 const VideoTranscript = () => {
   const router = useRouter();
@@ -50,13 +52,7 @@ const VideoTranscript = () => {
     ];
 
   return (
-    <Box
-      sx={{
-        py: 14,
-        minHeight: '100vh',
-        background: '#0b0d0f',
-      }}
-    >
+    <Box>
       <Container>
         <Box sx={{ display: 'flex', gap: 8 }}>
           <Box sx={{ flexShrink: 0 }}>
@@ -70,7 +66,7 @@ const VideoTranscript = () => {
                 </Box>
               </>
             )}
-            {!loading && (
+            {!loading && videoData && (
               <>
                 <Box
                   sx={{
@@ -88,7 +84,10 @@ const VideoTranscript = () => {
                       textTransform: 'uppercase',
                     }}
                   >
-                    {formatCount(videoData?.videoDetails.viewCount)} views
+                    {formatCount(
+                      parseInt(videoData?.videoDetails.viewCount || '0')
+                    )}{' '}
+                    views
                   </LabelPill>
                   <LabelPill
                     sx={{
@@ -99,9 +98,8 @@ const VideoTranscript = () => {
                     {wordsCount(transcriptText)} words
                   </LabelPill>
                 </Box>
-                {/* <Typography variant="h6">
-                  {videoData?.videoDetails.title}
-                </Typography> */}
+                <ChannelDetails videoDetails={videoData.videoDetails} />
+                <Metadata />
               </>
             )}
           </Box>
@@ -117,6 +115,7 @@ const VideoTranscript = () => {
                 </Stack>
               </>
             )}
+
             {!loading && videoData && (
               <>
                 <Typography
@@ -124,7 +123,8 @@ const VideoTranscript = () => {
                   sx={{
                     fontWeight: 600,
                     textTransform: 'uppercase',
-                    fontSize: 18,
+                    fontSize: 16,
+                    letterSpacing: '1px',
                     mb: 1,
                   }}
                 >

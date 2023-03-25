@@ -28,8 +28,9 @@ export const OmnibarProvider = ({ children }: OmnibarContextProps) => {
   useEffect(() => {
     if (!value) {
       setMatchCount(0);
-      setHighlightIndex(0);
     }
+
+    setHighlightIndex(0);
   }, [value]);
 
   return (

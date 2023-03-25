@@ -32,7 +32,7 @@ const FancyInput = (props: TextFieldProps) => {
         },
       }}
     >
-      <StyledInput fullWidth {...props} />
+      <StyledInput autoComplete="off" fullWidth {...props} />
     </Box>
   );
 };
