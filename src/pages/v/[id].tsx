@@ -99,7 +99,7 @@ const VideoTranscript = () => {
                   </LabelPill>
                 </Box>
                 <ChannelDetails videoDetails={videoData.videoDetails} />
-                <Metadata />
+                <Metadata availableTranscripts={videoData.availableLangs} />
               </>
             )}
           </Box>

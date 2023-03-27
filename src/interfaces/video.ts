@@ -14,7 +14,20 @@ export interface VideoDetails {
   thumbnail: { thumbnails: { height: number; width: number; url: string }[] };
 }
 
+export interface Language {
+  isGenerated: boolean;
+  language: { code: string; language: string };
+  url: string;
+  videoId: string;
+}
+
+export interface AvailableTranscipts {
+  generatedTranscripts: Language[];
+  manualTranscript: Language[];
+}
+
 export interface Video {
   subs: TranscriptSub[];
   videoDetails: VideoDetails;
+  availableLangs: AvailableTranscipts;
 }

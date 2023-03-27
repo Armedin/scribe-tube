@@ -1,15 +1,25 @@
+import { AvailableTranscipts } from '@/interfaces/video';
 import { Box, Stack } from '@mui/material';
 import Fingerprint from '../icons/Fingerprint';
 import Language from '../icons/Language';
 import SwitchLanguage from './SwitchLanguage';
 
-const Metadata = () => {
+const Metadata = ({
+  availableTranscripts,
+}: {
+  availableTranscripts: AvailableTranscipts;
+}) => {
   const metadata = [
     {
       title: 'Language',
       value: (
         <Box sx={{ display: 'flex', alignItems: 'center', button: { ml: 1 } }}>
-          English <SwitchLanguage />
+          English
+          <SwitchLanguage
+            languages={Object.values(availableTranscripts.manualTranscript).map(
+              lang => lang.language.language
+            )}
+          />
         </Box>
       ),
       icon: <Language />,

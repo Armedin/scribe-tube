@@ -4,15 +4,7 @@ import Menu from '../base/Menu';
 import MenuItem from '../base/MenuItem';
 import ChevronDown from '../icons/ChevronDown';
 
-const availableLanguages = [
-  'Albanian',
-  'English',
-  'Turkish',
-  'German',
-  'Spanish',
-];
-
-const SwitchLanguage = () => {
+const SwitchLanguage = ({ languages }: { languages: string[] }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLButtonElement>(null);
   const open = Boolean(anchorEl);
 
@@ -61,7 +53,7 @@ const SwitchLanguage = () => {
         PopperProps={{ placement: 'bottom-start' }}
         style={{ marginTop: '6px' }}
       >
-        {availableLanguages.map(lang => (
+        {languages.map(lang => (
           <MenuItem key={lang}>{lang}</MenuItem>
         ))}
       </Menu>

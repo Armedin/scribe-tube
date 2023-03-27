@@ -19,6 +19,8 @@ const MenuRoot = styled('ul')({
   padding: '4px',
   display: 'block',
   minWidth: 160,
+  maxHeight: 200,
+  overflow: 'auto',
 });
 
 const Menu = React.forwardRef<any, MenuProps>((inProps, ref) => {
