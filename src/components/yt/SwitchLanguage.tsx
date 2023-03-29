@@ -4,7 +4,13 @@ import Menu from '../base/Menu';
 import MenuItem from '../base/MenuItem';
 import ChevronDown from '../icons/ChevronDown';
 
-const SwitchLanguage = ({ languages }: { languages: string[] }) => {
+const SwitchLanguage = ({
+  languages,
+  onChange,
+}: {
+  languages: string[];
+  onChange: (lang: string) => void;
+}) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLButtonElement>(null);
   const open = Boolean(anchorEl);
 
@@ -14,6 +20,18 @@ const SwitchLanguage = ({ languages }: { languages: string[] }) => {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleOptionClick = (
+    event: Event | React.SyntheticEvent,
+    language: string
+  ) => {
+    if (anchorEl && anchorEl.contains(event.target as HTMLElement)) {
+      return;
+    }
+
+    setAnchorEl(null);
+    onChange(language);
   };
 
   return (
@@ -54,7 +72,12 @@ const SwitchLanguage = ({ languages }: { languages: string[] }) => {
         style={{ marginTop: '6px' }}
       >
         {languages.map(lang => (
-          <MenuItem key={lang}>{lang}</MenuItem>
+          <MenuItem
+            key={lang}
+            onClick={(event: any) => handleOptionClick(event, lang)}
+          >
+            {lang}
+          </MenuItem>
         ))}
       </Menu>
     </>

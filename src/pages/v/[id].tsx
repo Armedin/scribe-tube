@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import { useEffect, useMemo, useState } from 'react';
 import NormalTranscript from '@/components/transcript/NormalTranscript';
-import { Video } from '@/interfaces/video';
+import { Language, Video } from '@/interfaces/video';
 import { formatCount } from '@/utils/format-count';
 import LabelPill from '@/components/base/LabelPill';
 import { removeNewLines, wordsCount } from '@/utils/text-readibility';
@@ -33,12 +33,23 @@ const VideoTranscript = () => {
       });
   }, [id]);
 
+  const handleLanguageChange = (language: Language) => {
+    axios
+      .post('http://localhost:5000/transcribe/change-language', {
+        language: language,
+      })
+      .then(res => {
+        setVideoData(prev => ({ ...prev, ...res.data }));
+      });
+  };
+
   const transcriptText = useMemo(() => {
     if (!videoData) {
       return '';
     }
 
     let text = '';
+    console.log(videoData.subs);
     for (var i in videoData.subs) {
       text += removeNewLines(videoData.subs[i].text) + ' ';
     }
@@ -99,7 +110,11 @@ const VideoTranscript = () => {
                   </LabelPill>
                 </Box>
                 <ChannelDetails videoDetails={videoData.videoDetails} />
-                <Metadata availableTranscripts={videoData.availableLangs} />
+                <Metadata
+                  language={videoData.language}
+                  availableTranscripts={videoData.availableLangs}
+                  onLanguageChange={handleLanguageChange}
+                />
               </>
             )}
           </Box>

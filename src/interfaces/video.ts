@@ -30,4 +30,5 @@ export interface Video {
   subs: TranscriptSub[];
   videoDetails: VideoDetails;
   availableLangs: AvailableTranscipts;
+  language: string;
 }

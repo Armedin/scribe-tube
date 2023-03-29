@@ -1,28 +1,43 @@
-import { AvailableTranscipts } from '@/interfaces/video';
+import { AvailableTranscipts, Language } from '@/interfaces/video';
 import { Box, Stack } from '@mui/material';
+import { useState } from 'react';
 import Fingerprint from '../icons/Fingerprint';
-import Language from '../icons/Language';
+import LanguageIcon from '../icons/Language';
 import SwitchLanguage from './SwitchLanguage';
 
 const Metadata = ({
+  language,
   availableTranscripts,
+  onLanguageChange,
 }: {
+  language: string;
   availableTranscripts: AvailableTranscipts;
+  onLanguageChange: (language: Language) => void;
 }) => {
+  const [currentLanguage, setCurrentLanguage] = useState(language);
+
   const metadata = [
     {
       title: 'Language',
       value: (
         <Box sx={{ display: 'flex', alignItems: 'center', button: { ml: 1 } }}>
-          English
+          {currentLanguage}
           <SwitchLanguage
+            onChange={(lang: string) => {
+              setCurrentLanguage(lang);
+
+              const selectedLanguage = Object.values(
+                availableTranscripts.manualTranscript
+              ).find(item => item.language.language === lang);
+              onLanguageChange(selectedLanguage!);
+            }}
             languages={Object.values(availableTranscripts.manualTranscript).map(
               lang => lang.language.language
             )}
           />
         </Box>
       ),
-      icon: <Language />,
+      icon: <LanguageIcon />,
     },
     {
       title: 'Video ID',
@@ -45,6 +60,7 @@ const Metadata = ({
         <Stack gap={0.5}>
           {metadata.map((data, i) => (
             <Box
+              key={i}
               sx={{
                 fontSize: 13,
                 display: 'flex',
