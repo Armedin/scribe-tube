@@ -10,6 +10,7 @@ import LabelPill from '@/components/base/LabelPill';
 import { removeNewLines, wordsCount } from '@/utils/text-readibility';
 import ChannelDetails from '@/components/yt/ChannelDetails';
 import Metadata from '@/components/yt/Metadata';
+import VideoIFrame from '@/components/yt/VideoIFrame';
 
 const VideoTranscript = () => {
   const router = useRouter();
@@ -49,7 +50,6 @@ const VideoTranscript = () => {
     }
 
     let text = '';
-    console.log(videoData.subs);
     for (var i in videoData.subs) {
       text += removeNewLines(videoData.subs[i].text) + ' ';
     }
@@ -65,11 +65,11 @@ const VideoTranscript = () => {
   return (
     <Box>
       <Container>
-        <Box sx={{ display: 'flex', gap: 8 }}>
-          <Box sx={{ flexShrink: 0 }}>
+        <Box sx={{ display: 'flex', gap: 4 }}>
+          <Box sx={{ flexShrink: 0, width: '50%' }}>
             {loading && (
               <>
-                <Skeleton height={340} width={600} />
+                <Skeleton height={340} />
                 <Box sx={{ display: 'flex', gap: 1, mt: 1 }}>
                   <Skeleton variant="pill" width={80} height={20} />
                   <Skeleton variant="pill" width={80} height={20} />
@@ -78,8 +78,9 @@ const VideoTranscript = () => {
               </>
             )}
             {!loading && videoData && (
-              <>
-                <Box
+              <Box sx={{ position: 'sticky', top: 20 }}>
+                <VideoIFrame />
+                {/* <Box
                   sx={{
                     width: 600,
                     height: 340,
@@ -87,7 +88,7 @@ const VideoTranscript = () => {
                   }}
                 >
                   <img src={thumbnail?.url} />
-                </Box>
+                </Box> */}
                 <Box sx={{ display: 'flex', gap: 1, my: 1 }}>
                   <LabelPill
                     sx={{
@@ -115,7 +116,7 @@ const VideoTranscript = () => {
                   availableTranscripts={videoData.availableLangs}
                   onLanguageChange={handleLanguageChange}
                 />
-              </>
+              </Box>
             )}
           </Box>
 
