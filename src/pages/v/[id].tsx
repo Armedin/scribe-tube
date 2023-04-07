@@ -11,12 +11,16 @@ import { removeNewLines, wordsCount } from '@/utils/text-readibility';
 import ChannelDetails from '@/components/yt/ChannelDetails';
 import Metadata from '@/components/yt/Metadata';
 import VideoIFrame from '@/components/yt/VideoIFrame';
+import TranscriptTabs from '@/components/yt/TranscriptTabs';
+import TimeCodedTranscript from '@/components/transcript/TimeCodedTranscript';
+import { TranscriptSub } from '@/interfaces/transcript';
 
 const VideoTranscript = () => {
   const router = useRouter();
   const { id } = router.query;
   const [loading, setLoading] = useState(true);
   const [videoData, setVideoData] = useState<Video>();
+  const [seekTo, setSeekTo] = useState<number>();
 
   useEffect(() => {
     if (!id) {
@@ -44,6 +48,10 @@ const VideoTranscript = () => {
       });
   };
 
+  const handleSegmentClick = (sub: TranscriptSub) => {
+    setSeekTo(sub.start);
+  };
+
   const transcriptText = useMemo(() => {
     if (!videoData) {
       return '';
@@ -57,10 +65,10 @@ const VideoTranscript = () => {
     return text;
   }, [videoData]);
 
-  const thumbnail =
-    videoData?.videoDetails.thumbnail.thumbnails[
-      videoData.videoDetails.thumbnail.thumbnails.length - 1
-    ];
+  // const thumbnail =
+  //   videoData?.videoDetails.thumbnail.thumbnails[
+  //     videoData.videoDetails.thumbnail.thumbnails.length - 1
+  //   ];
 
   return (
     <Box>
@@ -79,21 +87,17 @@ const VideoTranscript = () => {
             )}
             {!loading && videoData && (
               <Box sx={{ position: 'sticky', top: 20 }}>
-                <VideoIFrame />
-                {/* <Box
-                  sx={{
-                    width: 600,
-                    height: 340,
-                    img: { width: '100%', height: '100%', objectFit: 'cover' },
-                  }}
-                >
-                  <img src={thumbnail?.url} />
-                </Box> */}
+                <VideoIFrame
+                  videoId={videoData.videoDetails.videoId}
+                  seekTo={seekTo}
+                />
                 <Box sx={{ display: 'flex', gap: 1, my: 1 }}>
                   <LabelPill
                     sx={{
                       fontWeight: 400,
                       textTransform: 'uppercase',
+                      background: 'var(--colors-tomato3)',
+                      color: 'var(--colors-tomato11)',
                     }}
                   >
                     {formatCount(
@@ -105,6 +109,8 @@ const VideoTranscript = () => {
                     sx={{
                       fontWeight: 400,
                       textTransform: 'uppercase',
+                      background: 'var(--colors-tomato3)',
+                      color: 'var(--colors-tomato11)',
                     }}
                   >
                     {wordsCount(transcriptText)} words
@@ -134,19 +140,13 @@ const VideoTranscript = () => {
 
             {!loading && videoData && (
               <>
-                <Typography
-                  variant="h6"
-                  sx={{
-                    fontWeight: 600,
-                    textTransform: 'uppercase',
-                    fontSize: 16,
-                    letterSpacing: '1px',
-                    mb: 1,
-                  }}
-                >
-                  Video Transcript
-                </Typography>
-                <NormalTranscript subs={videoData.subs} />
+                <TranscriptTabs>
+                  <NormalTranscript subs={videoData.subs} />
+                  <TimeCodedTranscript
+                    subs={videoData.subs}
+                    onSegmentClick={handleSegmentClick}
+                  />
+                </TranscriptTabs>
               </>
             )}
           </Box>
