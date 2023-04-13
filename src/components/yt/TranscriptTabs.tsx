@@ -2,10 +2,10 @@ import * as React from 'react';
 import { styled } from '@mui/system';
 import TabsUnstyled from '@mui/base/TabsUnstyled';
 import TabsListUnstyled from '@mui/base/TabsListUnstyled';
-import TabPanelUnstyled from '@mui/base/TabPanelUnstyled';
 import { buttonUnstyledClasses } from '@mui/base/ButtonUnstyled';
 import TabUnstyled, { tabUnstyledClasses } from '@mui/base/TabUnstyled';
 import { Box } from '@mui/material';
+import TabPanelMounted from '../base/TabPanelMounted';
 
 const TabsList = styled(TabsListUnstyled)(({ theme }) => ({
   minWidth: 400,
@@ -43,20 +43,15 @@ const Tab = styled(TabUnstyled)({
   },
 });
 
-const TabPanel = styled(TabPanelUnstyled)(
-  ({ theme }) => `
-  width: 100%;
-  padding: 20px 0;
-  `
-);
-
-const TranscriptTabs = ({ children }: any) => {
+const TranscriptTabs = (props: any) => {
+  const { children, ...other } = props;
   return (
-    <TabsUnstyled defaultValue={0}>
+    <TabsUnstyled {...other}>
       <TabsList>
         <Tab>Normal</Tab>
         <Tab>Time-coded</Tab>
-        <Tab disabled>Puncutated</Tab>
+        <Tab>Summary</Tab>
+        <Tab disabled>Punctuated</Tab>
         <Box
           sx={{
             pointerEvents: 'none',
@@ -75,9 +70,9 @@ const TranscriptTabs = ({ children }: any) => {
         </Box>
       </TabsList>
       {React.Children.toArray(children).map((child, i) => (
-        <TabPanel value={i} key={i}>
+        <TabPanelMounted value={i} key={i}>
           {child}
-        </TabPanel>
+        </TabPanelMounted>
       ))}
       {/* <TabPanel value={0}>My account page</TabPanel> */}
     </TabsUnstyled>

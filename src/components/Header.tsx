@@ -1,10 +1,17 @@
 import { useYoutubeForm } from '@/hooks/useYoutubeForm';
-import { Box, Container, Typography } from '@mui/material';
+import { Box, Container, IconButton, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import SearchInput from './base/SearchInput';
+import Bars from './icons/Bars';
 import ClosedCaptioning from './icons/ClosedCaptioning';
 
-const Header = () => {
+const Header = ({
+  sidebarOpen,
+  onSidebarToggle,
+}: {
+  sidebarOpen: boolean;
+  onSidebarToggle: () => void;
+}) => {
   const router = useRouter();
   const { youtubeLink, handleInputChange, handleSubmit } = useYoutubeForm();
 
@@ -63,12 +70,32 @@ const Header = () => {
             </Box> */}
           </Box>
 
-          <Box component="form" onSubmit={handleSubmit}>
-            <SearchInput
-              placeholder="Search video..."
-              onChange={handleInputChange}
-              value={youtubeLink}
-            />
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Box component="form" onSubmit={handleSubmit}>
+              <SearchInput
+                placeholder="Search video..."
+                onChange={handleInputChange}
+                value={youtubeLink}
+              />
+            </Box>
+
+            <IconButton
+              sx={{
+                width: 38,
+                height: 38,
+                borderRadius: '8px',
+                svg: { color: 'var(--colors-gray11)', fontSize: 20 },
+                '&:hover': {
+                  background: 'var(--colors-gray2)',
+                  svg: {
+                    color: 'var(--colors-gray12)',
+                  },
+                },
+              }}
+              onClick={onSidebarToggle}
+            >
+              <Bars />
+            </IconButton>
           </Box>
         </Box>
       </Container>

@@ -2,23 +2,35 @@ import { Box } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import { loadSdk } from '@/utils/load-sdk';
 
-const VideoIFrame = ({
-  videoId,
-  seekTo,
-}: {
+const VideoIFrame = (props: {
   videoId: string;
   seekTo?: number;
+  onPlayerStart?: (player: any) => void;
+  onPlayerStop?: () => void;
 }) => {
+  const { videoId, seekTo: seekProp, onPlayerStart, onPlayerStop } = props;
   const [player, setPlayer] = useState<any>();
+  const [seekTo, setSeekTo] = useState<any>(seekProp);
 
   useEffect(() => {
-    console.log(player);
+    if (!player) {
+      return;
+    }
 
+    setSeekTo(seekProp);
+  }, [seekProp]);
+
+  useEffect(() => {
+    setSeekTo(undefined);
+  }, [videoId]);
+
+  useEffect(() => {
     if (!seekTo || !player) {
       return;
     }
 
     player.seekTo(seekTo);
+    player.playVideo();
   }, [seekTo, player]);
 
   useEffect(() => {
@@ -36,24 +48,18 @@ const VideoIFrame = ({
     });
   }, []);
 
-  const createPlayer = () => {
-    player.current = new window.YT.Player('player', {
-      videoId,
-      events: {
-        onReady: onPlayerReady,
-        onStateChange: onPlayerStateChange,
-      },
-    });
-    console.log(player.current);
-  };
-
   const onPlayerReady = (event: any) => {
     setPlayer(event.target);
     // event.target.playVideo();
   };
 
   const onPlayerStateChange = (event: any) => {
-    console.log(event);
+    if (event.data === YT.PlayerState.PLAYING) {
+      // TODO - When navigating away and returning, the player's functions like getcurrenttime are gone...
+      onPlayerStart?.(event.target);
+    } else {
+      onPlayerStop?.();
+    }
   };
 
   return (

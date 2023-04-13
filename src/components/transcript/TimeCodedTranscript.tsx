@@ -15,6 +15,9 @@ const TimeCodedTranscript = ({
       {subs.map((sub, i) => (
         <Box
           key={i}
+          className="timestamp-marker"
+          data-start={sub.start}
+          data-end={parseFloat(sub.start) + parseFloat(sub.duration)}
           sx={{
             display: 'flex',
             alignItems: 'center',
@@ -22,7 +25,7 @@ const TimeCodedTranscript = ({
             py: 1.5,
             cursor: 'pointer',
             color: 'var(--colors-gray11)',
-            '&:hover': {
+            '&.active, &:hover': {
               background: 'var(--colors-gray2)',
               fontWeight: 400,
               color: 'var(--colors-gray12)',
