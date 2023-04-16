@@ -12,6 +12,7 @@ const Layout = (props: any) => {
         minHeight: '100%',
         width: '100%',
         display: 'flex',
+        overflowX: 'hidden',
         // flexDirection: 'column',
       }}
     >

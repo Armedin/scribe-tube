@@ -17,7 +17,7 @@ const Header = ({
 
   return (
     <Box sx={{ height: 80, display: 'flex', alignItems: 'center' }}>
-      <Container>
+      <Container maxWidth="xl">
         <Box
           sx={{
             display: 'flex',

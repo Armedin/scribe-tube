@@ -29,6 +29,7 @@ const FancyInput = (props: TextFieldProps) => {
 
         '.MuiOutlinedInput-notchedOutline': {
           border: 'none',
+          display: 'none',
         },
       }}
     >

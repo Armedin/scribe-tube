@@ -7,6 +7,7 @@ import type { AppProps } from 'next/app';
 import { theme } from '../mui/theme';
 
 import '../style/global.css';
+import { PinnedVideosProvider } from '@/components/PinnedVideosContext';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -17,9 +18,11 @@ export default function App({ Component, pageProps }: AppProps) {
       />
       <ThemeProvider theme={createTheme(theme)}>
         <OmnibarProvider>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          <PinnedVideosProvider>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </PinnedVideosProvider>
         </OmnibarProvider>
       </ThemeProvider>
     </>

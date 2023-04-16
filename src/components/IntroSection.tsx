@@ -5,18 +5,23 @@ import ProductHuntBanner from './ProductHuntBanner';
 import ringsBg from '../assets/img/rings-bg.svg';
 import grid from '../assets/img/grid.svg';
 import { useYoutubeForm } from '@/hooks/useYoutubeForm';
+import BrowserPreview from './browser/BrowserPreview';
 
 const IntroSection = () => {
   const { youtubeLink, handleInputChange, handleSubmit } = useYoutubeForm();
 
   return (
     <Box
-      sx={{
-        // backgroundImage: `url(${ringsBg.src})`,
-        backgroundPosition: '50% 50%',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-      }}
+      sx={
+        {
+          // backgroundImage: `url(${ringsBg.src})`,
+          // backgroundRepeat: 'no-repeat',
+          // backgroundSize: 'cover',
+          // backgroundPosition: '50% 50%',
+          // backgroundImage: `url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABcSURBVHgB7c+xDYAwEMDAhwFA7D8siC2c6K5w75lNHH+u+3lncedswkiNkRojNUZqjNQYqTFSY6TGSI2RGiM1RmqM1BipMVJjpMZIjZEaIzVGaozUGKkxUrPNyAe6rQGPuifKNwAAAABJRU5ErkJggg==)`,
+          // backgroundSize: 50,
+        }
+      }
     >
       <Box sx={{ mb: 2, mx: 1.5, display: 'flex', justifyContent: 'center' }}>
         <ProductHuntBanner />
@@ -63,47 +68,7 @@ const IntroSection = () => {
         <ActionButton type="submit">Transcribe video</ActionButton>
       </Box>
 
-      {/* <Box
-        sx={{
-          mt: 18,
-          width: 1200,
-          py: 3,
-          mx: 'auto',
-          position: 'relative',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          img: { width: '94%', position: 'relative' },
-        }}
-      >
-        <Box
-          sx={{
-            height: '100%',
-            width: '100%',
-            position: 'absolute',
-            inset: 0,
-            // WebkitMaskImage:
-            //   'radial-gradient(circle at center center, black, transparent 80%)',
-          }}
-        >
-          <Box
-            sx={{
-              background: 'linear-gradient(to bottom,#b4b4b4,transparent 80%)',
-              // background:
-              //   'radial-gradient(circle at bottom center,#7877C6,transparent 70%)',
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              opacity: 0.3,
-              filter: 'blur(40px)',
-            }}
-          />
-        </Box>
-
-        <img src="https://framerusercontent.com/images/H3bidclajEmo5RqMfI9zJ8dDG0.png" />
-      </Box> */}
+      <BrowserPreview />
     </Box>
   );
 };

@@ -10,6 +10,7 @@ const LabelPill = (props: BoxProps) => {
         padding: '5px 10px',
         fontSize: 13,
         lineHeight: 1.1,
+        height: '24px',
         borderRadius: '999px',
         ...sx,
       }}

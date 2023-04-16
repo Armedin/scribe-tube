@@ -14,6 +14,8 @@ import VideoIFrame from '@/components/yt/VideoIFrame';
 import TranscriptTabs from '@/components/yt/TranscriptTabs';
 import TimeCodedTranscript from '@/components/transcript/TimeCodedTranscript';
 import { TranscriptSub } from '@/interfaces/transcript';
+import PinButton from '@/components/yt/PinButton';
+import { usePinnedVideos } from '@/components/PinnedVideosContext';
 
 const VideoTranscript = () => {
   const router = useRouter();
@@ -23,21 +25,34 @@ const VideoTranscript = () => {
   const [seekTo, setSeekTo] = useState<number>();
   const updateMarkerInterval = useRef<any>(null);
   const [tabValue, setTabValue] = useState(0);
+  const { pinVideo, removePinnedVideo, pinnedVideos } = usePinnedVideos();
+
+  const isVideoPinned = useMemo(() => {
+    if (!videoData?.videoDetails) {
+      return false;
+    }
+
+    return (
+      pinnedVideos.findIndex(
+        item => item.videoId == videoData.videoDetails.videoId
+      ) !== -1
+    );
+  }, [videoData, pinnedVideos]);
 
   useEffect(() => {
     if (!id) {
       return;
     }
 
-    // setLoading(true);
-    // axios
-    //   .post('http://localhost:5000/transcribe', { id })
-    //   .then(res => {
-    //     setVideoData(res.data);
-    //   })
-    //   .finally(() => {
-    //     setLoading(false);
-    //   });
+    setLoading(true);
+    axios
+      .post('http://localhost:5000/transcribe', { id })
+      .then(res => {
+        setVideoData(res.data);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, [id]);
 
   const handleLanguageChange = (language: Language) => {
@@ -98,6 +113,18 @@ const VideoTranscript = () => {
     }
   };
 
+  const handlePinClick = () => {
+    if (!videoData?.videoDetails) {
+      return;
+    }
+
+    if (isVideoPinned) {
+      removePinnedVideo(videoData.videoDetails.videoId);
+    } else {
+      pinVideo(videoData.videoDetails);
+    }
+  };
+
   const transcriptText = useMemo(() => {
     if (!videoData) {
       return '';
@@ -134,30 +161,46 @@ const VideoTranscript = () => {
                   onPlayerStart={handlePlayerStart}
                   onPlayerStop={handlePlayerStop}
                 />
-                <Box sx={{ display: 'flex', gap: 1, my: 1 }}>
-                  <LabelPill
-                    sx={{
-                      fontWeight: 400,
-                      textTransform: 'uppercase',
-                      background: 'var(--colors-tomato3)',
-                      color: 'var(--colors-tomato11)',
-                    }}
-                  >
-                    {formatCount(
-                      parseInt(videoData?.videoDetails.viewCount || '0')
-                    )}{' '}
-                    views
-                  </LabelPill>
-                  <LabelPill
-                    sx={{
-                      fontWeight: 400,
-                      textTransform: 'uppercase',
-                      background: 'var(--colors-tomato3)',
-                      color: 'var(--colors-tomato11)',
-                    }}
-                  >
-                    {wordsCount(transcriptText)} words
-                  </LabelPill>
+
+                <Box
+                  sx={{
+                    my: 1,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <Box sx={{ display: 'flex', gap: 1, my: 1 }}>
+                    <LabelPill
+                      sx={{
+                        fontWeight: 400,
+                        textTransform: 'uppercase',
+                        background: 'var(--colors-tomato3)',
+                        color: 'var(--colors-tomato11)',
+                      }}
+                    >
+                      {formatCount(
+                        parseInt(videoData?.videoDetails.viewCount || '0')
+                      )}{' '}
+                      views
+                    </LabelPill>
+                    <LabelPill
+                      sx={{
+                        fontWeight: 400,
+                        textTransform: 'uppercase',
+                        background: 'var(--colors-tomato3)',
+                        color: 'var(--colors-tomato11)',
+                      }}
+                    >
+                      {wordsCount(transcriptText)} words
+                    </LabelPill>
+                  </Box>
+                  <Box>
+                    <PinButton
+                      onClick={handlePinClick}
+                      isPinned={isVideoPinned}
+                    />
+                  </Box>
                 </Box>
                 <ChannelDetails videoDetails={videoData.videoDetails} />
                 <Metadata
