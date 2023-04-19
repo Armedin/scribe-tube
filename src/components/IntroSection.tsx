@@ -6,6 +6,8 @@ import ringsBg from '../assets/img/rings-bg.svg';
 import grid from '../assets/img/grid.svg';
 import { useYoutubeForm } from '@/hooks/useYoutubeForm';
 import BrowserPreview from './browser/BrowserPreview';
+import AnimatedTitle from '@/animations/AnimatedTitle';
+import FadeInUpBox from '@/animations/FadeIn';
 
 const IntroSection = () => {
   const { youtubeLink, handleInputChange, handleSubmit } = useYoutubeForm();
@@ -23,52 +25,52 @@ const IntroSection = () => {
         }
       }
     >
-      <Box sx={{ mb: 2, mx: 1.5, display: 'flex', justifyContent: 'center' }}>
-        <ProductHuntBanner />
-      </Box>
-      <Typography
-        variant="h1"
-        sx={{
-          textAlign: 'center',
-          backgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          mb: 4,
-          backgroundImage:
-            'linear-gradient(to right bottom, rgba(255, 255, 255, 1) 15%, rgba(255, 255, 255, 0.38) 100%)',
-        }}
-      >
-        The best way to get free transcripts <br /> for any YouTube Video
-      </Typography>
+      <FadeInUpBox>
+        <Box sx={{ mb: 2, mx: 1.5, display: 'flex', justifyContent: 'center' }}>
+          <ProductHuntBanner />
+        </Box>
+        <Typography
+          variant="h1"
+          sx={{
+            textAlign: 'center',
+            backgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            mb: 4,
+            backgroundImage:
+              'linear-gradient(to right bottom, rgba(255, 255, 255, 1) 15%, rgba(255, 255, 255, 0.38) 100%)',
+          }}
+        >
+          The best way to get free transcripts <br /> for any YouTube Video
+        </Typography>
 
-      <Typography
-        sx={{
-          color: 'var(--colors-gray11)',
-          textAlign: 'center',
-          maxWidth: '48rem',
-          mx: 'auto',
-          fontWeight: 300,
-          fontSize: 22,
-          mb: 6,
-        }}
-      >
-        Simply paste the video link and get a transcript instantly. Edit, save,
-        or download the transcript as a text file.
-      </Typography>
+        <Typography
+          sx={{
+            color: 'var(--colors-gray11)',
+            textAlign: 'center',
+            maxWidth: '48rem',
+            mx: 'auto',
+            fontWeight: 300,
+            fontSize: 20,
+            mb: 5,
+          }}
+        >
+          Simply paste the video link and get a transcript instantly. Edit,
+          save, or download the transcript as a text file.
+        </Typography>
 
-      <Box
-        component="form"
-        sx={{ maxWidth: 720, mx: 'auto', display: 'flex', gap: 2 }}
-        onSubmit={handleSubmit}
-      >
-        <FancyInput
-          placeholder="www.youtube.com/watch?v=xxxxxxxx"
-          onChange={handleInputChange}
-          value={youtubeLink}
-        />
-        <ActionButton type="submit">Transcribe video</ActionButton>
-      </Box>
-
-      <BrowserPreview />
+        <Box
+          component="form"
+          sx={{ maxWidth: '50rem', mx: 'auto', display: 'flex', gap: 2 }}
+          onSubmit={handleSubmit}
+        >
+          <FancyInput
+            placeholder="www.youtube.com/watch?v=xxxxxxxx"
+            onChange={handleInputChange}
+            value={youtubeLink}
+          />
+          <ActionButton type="submit">Transcribe video</ActionButton>
+        </Box>
+      </FadeInUpBox>
     </Box>
   );
 };

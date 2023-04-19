@@ -61,7 +61,7 @@ const BrowserPreview = () => {
           }}
         >
           <Frame>
-            <Grid container spacing={2}>
+            <Grid container spacing={2.5}>
               <Grid item xs={6}>
                 <Box
                   sx={{
