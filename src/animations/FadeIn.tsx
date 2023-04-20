@@ -1,12 +1,19 @@
 import { motion } from 'framer-motion';
 import { useMemo } from 'react';
+import { useInView } from 'react-intersection-observer';
 
 interface FadeInUpBoxProps {
-  index: number;
+  index?: number;
+  style?: any;
   children: React.ReactNode;
 }
 
-const FadeInUpBox = ({ index = 0, children }: FadeInUpBoxProps) => {
+const FadeInUpBox = ({ index = 0, style, children }: FadeInUpBoxProps) => {
+  const { ref, inView } = useInView({
+    threshold: 0.25,
+    triggerOnce: true,
+  });
+
   const transition = useMemo(
     () => ({
       duration: 0.4,
@@ -28,10 +35,12 @@ const FadeInUpBox = ({ index = 0, children }: FadeInUpBoxProps) => {
 
   return (
     <motion.div
+      ref={ref}
       initial="hidden"
-      animate="show"
+      animate={inView ? 'show' : 'hidden'}
       exit="hidden"
       variants={variants}
+      style={style}
     >
       {children}
     </motion.div>
