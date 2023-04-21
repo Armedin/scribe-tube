@@ -50,7 +50,7 @@ const VideoTranscript = () => {
     setIsTranscribable(true);
     setVideoData(undefined);
     axios
-      .post('http://localhost:3000/api/transcribe', { id })
+      .post('/api/transcribe', { id })
       .then(res => {
         setVideoData(res.data);
       })
@@ -65,7 +65,7 @@ const VideoTranscript = () => {
 
   const handleLanguageChange = (language: Language) => {
     axios
-      .post('http://localhost:3000/api/transcribe/change-language', {
+      .post('/api/transcribe/change-language', {
         language: language,
       })
       .then(res => {
