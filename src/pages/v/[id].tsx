@@ -16,12 +16,14 @@ import TimeCodedTranscript from '@/components/transcript/TimeCodedTranscript';
 import { TranscriptSub } from '@/interfaces/transcript';
 import PinButton from '@/components/yt/PinButton';
 import { usePinnedVideos } from '@/components/PinnedVideosContext';
+import NotTranscribable from '@/components/NotTrascribable';
 
 const VideoTranscript = () => {
   const router = useRouter();
   const { id } = router.query;
   const [loading, setLoading] = useState(true);
-  const [videoData, setVideoData] = useState<Video>();
+  const [isTranscribable, setIsTranscribable] = useState(true);
+  const [videoData, setVideoData] = useState<Video | undefined>();
   const [seekTo, setSeekTo] = useState<number>();
   const updateMarkerInterval = useRef<any>(null);
   const [tabValue, setTabValue] = useState(0);
@@ -45,10 +47,16 @@ const VideoTranscript = () => {
     }
 
     setLoading(true);
+    setIsTranscribable(true);
+    setVideoData(undefined);
     axios
-      .post('http://localhost:5000/transcribe', { id })
+      .post('http://localhost:3000/api/transcribe', { id })
       .then(res => {
         setVideoData(res.data);
+      })
+      .catch(e => {
+        console.log(e);
+        setIsTranscribable(false);
       })
       .finally(() => {
         setLoading(false);
@@ -57,11 +65,14 @@ const VideoTranscript = () => {
 
   const handleLanguageChange = (language: Language) => {
     axios
-      .post('http://localhost:5000/transcribe/change-language', {
+      .post('http://localhost:3000/api/transcribe/change-language', {
         language: language,
       })
       .then(res => {
         setVideoData(prev => ({ ...prev, ...res.data }));
+      })
+      .catch(e => {
+        console.log(e);
       });
   };
 
@@ -139,7 +150,7 @@ const VideoTranscript = () => {
   }, [videoData]);
 
   return (
-    <Box>
+    <Box sx={{ pb: 6 }}>
       <Container maxWidth="xl">
         <Box sx={{ display: 'flex', gap: 4 }}>
           <Box sx={{ flexShrink: 0, width: '50%' }}>
@@ -242,6 +253,8 @@ const VideoTranscript = () => {
             )}
           </Box>
         </Box>
+
+        {!isTranscribable && <NotTranscribable />}
       </Container>
     </Box>
   );

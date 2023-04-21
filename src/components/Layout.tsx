@@ -29,7 +29,7 @@ const Layout = (props: any) => {
             width: '100%',
           }}
         >
-          <Box sx={{ py: 6, flex: '1 1 100%' }}>{props.children}</Box>
+          <Box sx={{ pt: 6, flex: '1 1 100%' }}>{props.children}</Box>
         </Box>
       </Box>
 

@@ -1,4 +1,5 @@
 import FadeInUpBox from '@/animations/FadeIn';
+import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import IntroSection from '@/components/IntroSection';
 import OverviewSection from '@/components/OverviewSection';
@@ -15,6 +16,7 @@ export default function Home() {
         <BrowserPreview />
       </FadeInUpBox>
       <OverviewSection />
+      <Footer />
     </>
   );
 }
