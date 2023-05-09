@@ -70,7 +70,11 @@ const TranscriptTabs = (props: any) => {
         </Box>
       </TabsList>
       {React.Children.toArray(children).map((child, i) => (
-        <TabPanelMounted value={i} key={i}>
+        <TabPanelMounted
+          // sx={{ height: 'calc(100vh - 80px - 60px)', overflow: 'scroll' }}
+          value={i}
+          key={i}
+        >
           {child}
         </TabPanelMounted>
       ))}

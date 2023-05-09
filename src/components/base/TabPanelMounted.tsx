@@ -14,8 +14,9 @@ const TabPanelMounted = (props: any) => {
     <Box
       className="TabPanel-Mounted"
       sx={{
-        padding: '20px 0',
+        margin: '20px 0',
         width: '100%',
+        flex: '1 1 100%',
         display: value === tabId ? 'block' : 'none',
         ...sx,
       }}

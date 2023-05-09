@@ -25,6 +25,7 @@ export const useYoutubeForm = () => {
     }
 
     router.push(`/v/${youtubeId}`);
+    setYoutubeLink('');
 
     if (document.activeElement instanceof HTMLElement) {
       document.activeElement.blur();

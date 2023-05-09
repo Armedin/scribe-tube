@@ -17,6 +17,8 @@ import { TranscriptSub } from '@/interfaces/transcript';
 import PinButton from '@/components/yt/PinButton';
 import { usePinnedVideos } from '@/components/PinnedVideosContext';
 import NotTranscribable from '@/components/NotTrascribable';
+import scrollIntoView from '@/utils/scroll-into-view';
+import Summary from '@/components/transcript/Summary';
 
 const VideoTranscript = () => {
   const router = useRouter();
@@ -102,6 +104,8 @@ const VideoTranscript = () => {
       const markerEnd = parseFloat(marker.dataset.end);
       if (currentTime >= markerStart && currentTime <= markerEnd) {
         marker.classList.add('active');
+        // scrollIntoView(marker.parentElement, marker);
+        marker.scrollIntoView({ block: 'center' });
         hasMarked = true;
       } else {
         marker.classList.remove('active');
@@ -115,6 +119,8 @@ const VideoTranscript = () => {
 
     if (!hasMarked && closestMarker) {
       closestMarker.classList.add('active');
+      // scrollIntoView(closestMarker.parentElement, closestMarker);
+      closestMarker.scrollIntoView({ block: 'center' });
     }
   };
 
@@ -223,16 +229,26 @@ const VideoTranscript = () => {
             )}
           </Box>
 
-          <Box sx={{ flex: '1 1 100%' }}>
+          <Box
+            sx={{
+              flex: '1 1 100%',
+              display: 'flex',
+              '.MuiTabs-root': {
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+              },
+            }}
+          >
             {loading && (
-              <>
+              <Box sx={{ width: '100%' }}>
                 <Skeleton width="100%" height={36} />
                 <Stack sx={{ mt: 4, gap: 1 }}>
                   <Skeleton width="70%" height={14} />
                   <Skeleton width="90%" height={14} />
                   <Skeleton width="60%" height={14} />
                 </Stack>
-              </>
+              </Box>
             )}
 
             {!loading && videoData && (
@@ -247,6 +263,10 @@ const VideoTranscript = () => {
                   <TimeCodedTranscript
                     subs={videoData.subs}
                     onSegmentClick={handleSegmentClick}
+                  />
+                  <Summary
+                    title={videoData.videoDetails.title}
+                    transcriptText={transcriptText}
                   />
                 </TranscriptTabs>
               </>

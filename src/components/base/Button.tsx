@@ -25,11 +25,18 @@ const StyledButton = styled(MuiButton)(props => ({
       background: 'var(--colors-gray4)',
     },
   }),
+
   ...(props.size === 'small' && {
     fontSize: 13,
     height: 32,
     padding: '8px 12px',
   }),
+
+  '&.Mui-disabled': {
+    opacity: 0.9,
+    backgroundColor: '#1c1c1d',
+    color: '#aaaaab',
+  },
 }));
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(

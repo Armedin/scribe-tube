@@ -46,7 +46,7 @@ export const OmnibarProvider = ({ children }: OmnibarContextProps) => {
         setMatchCount,
       }}
     >
-      <Omnibar />
+      {/* <Omnibar /> */}
       {children}
     </OmnibarContext.Provider>
   );

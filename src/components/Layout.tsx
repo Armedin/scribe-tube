@@ -9,14 +9,14 @@ const Layout = (props: any) => {
   return (
     <Box
       sx={{
-        minHeight: '100%',
+        height: '100%',
         width: '100%',
         display: 'flex',
         overflowX: 'hidden',
         // flexDirection: 'column',
       }}
     >
-      <Box sx={{ flex: '1 1 100%' }}>
+      <Box sx={{ flex: '1 1 100%', overflow: 'scroll' }}>
         <Header
           sidebarOpen={sidebarOpen}
           onSidebarToggle={() => setSidebarOpen(prev => !prev)}
@@ -29,7 +29,7 @@ const Layout = (props: any) => {
             width: '100%',
           }}
         >
-          <Box sx={{ pt: 6, flex: '1 1 100%' }}>{props.children}</Box>
+          <Box sx={{ pt: 3, flex: '1 1 100%' }}>{props.children}</Box>
         </Box>
       </Box>
 

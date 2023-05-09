@@ -10,13 +10,13 @@ import Image from 'next/image';
 
 export default function Home() {
   return (
-    <>
+    <Box pt={3}>
       <IntroSection />
       <FadeInUpBox index={3}>
         <BrowserPreview />
       </FadeInUpBox>
       <OverviewSection />
       <Footer />
-    </>
+    </Box>
   );
 }

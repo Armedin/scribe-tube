@@ -18,6 +18,7 @@ const Sidebar = ({ open }: { open: boolean }) => {
     <Box
       sx={{
         transition: 'width 200ms cubic-bezier(0.41, 1.08, 0.73, 1) 0ms',
+        height: '100%',
         ...(open && {
           transition: 'width 200ms cubic-bezier(0.41, 1.08, 0.73, 1) 0ms',
           width: 360,
@@ -66,62 +67,64 @@ const Sidebar = ({ open }: { open: boolean }) => {
         </Box>
 
         {loaded && pinnedVideos.length > 0 && (
-          <Box sx={{ p: 1.5 }}>
-            {pinnedVideos.map((pinnedVideo, i) => {
-              const thumbnailUrl =
-                pinnedVideo.thumbnail.thumbnails[
-                  pinnedVideo.thumbnail.thumbnails.length - 1
-                ].url;
+          <Box sx={{ overflowY: 'scroll' }}>
+            <Box sx={{ p: 1.5 }}>
+              {pinnedVideos.map((pinnedVideo, i) => {
+                const thumbnailUrl =
+                  pinnedVideo.thumbnail.thumbnails[
+                    pinnedVideo.thumbnail.thumbnails.length - 1
+                  ].url;
 
-              return (
-                <Box
-                  key={i}
-                  sx={{
-                    background: 'var(--colors-gray2)',
-                    border: '1px solid var(--colors-gray5)',
-                    borderRadius: '12px',
-                    padding: '4px',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    mb: 0.5,
-
-                    '&:hover': {
-                      button: {
-                        background: 'var(--colors-gray4)',
-                        color: 'var(--colors-gray12)',
-                      },
-                    },
-                  }}
-                  onClick={() => router.push(`/v/${pinnedVideo.videoId}`)}
-                >
+                return (
                   <Box
+                    key={i}
                     sx={{
-                      position: 'relative',
-                      overflow: 'hidden',
-                      img: { width: '100%', borderRadius: '12px' },
+                      background: 'var(--colors-gray2)',
+                      border: '1px solid var(--colors-gray5)',
+                      borderRadius: '12px',
+                      padding: '4px',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      mb: 0.5,
+
+                      '&:hover': {
+                        button: {
+                          background: 'var(--colors-gray4)',
+                          color: 'var(--colors-gray12)',
+                        },
+                      },
                     }}
+                    onClick={() => router.push(`/v/${pinnedVideo.videoId}`)}
                   >
-                    <img src={thumbnailUrl} />
+                    <Box
+                      sx={{
+                        position: 'relative',
+                        overflow: 'hidden',
+                        img: { width: '100%', borderRadius: '12px' },
+                      }}
+                    >
+                      <img src={thumbnailUrl} />
+                    </Box>
+                    <Button
+                      sx={{
+                        height: 36,
+                        background: 'var(--colors-gray3)',
+                        borderRadius: '8px',
+                        border: 'none',
+                        fontSize: 13,
+                        fontWeight: 500,
+                        color: 'var(--colors-gray11)',
+                        svg: { ml: 0.25 },
+                      }}
+                    >
+                      View Video
+                      <ArrowRight />
+                    </Button>
                   </Box>
-                  <Button
-                    sx={{
-                      height: 36,
-                      background: 'var(--colors-gray3)',
-                      borderRadius: '8px',
-                      border: 'none',
-                      fontSize: 13,
-                      fontWeight: 500,
-                      color: 'var(--colors-gray11)',
-                      svg: { ml: 0.25 },
-                    }}
-                  >
-                    View Video
-                    <ArrowRight />
-                  </Button>
-                </Box>
-              );
-            })}
+                );
+              })}
+            </Box>
           </Box>
         )}
 

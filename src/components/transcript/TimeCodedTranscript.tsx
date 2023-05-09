@@ -11,7 +11,7 @@ const TimeCodedTranscript = ({
   onSegmentClick: (sub: TranscriptSub) => void;
 }) => {
   return (
-    <Box>
+    <Box className="timestamps-container">
       {subs.map((sub, i) => (
         <Box
           key={i}
