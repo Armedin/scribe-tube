@@ -14,11 +14,14 @@ const Summary = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [summary, setSummary] = useState();
+  const [prompt, setPrompt] = useState(
+    'Summarize the above content highlights.'
+  );
 
   const handleSummarise = () => {
     setLoading(true);
     axios
-      .post('/api/summarise', { title, transcript: transcriptText })
+      .post('/api/summarise', { title, transcript: transcriptText, prompt })
       .then(res => setSummary(res.data.content))
       .finally(() => setLoading(false));
   };
@@ -39,9 +42,16 @@ const Summary = ({
           <Stack spacing={2}>
             <Input
               isTextarea
-              label="Prompt for Summary"
-              value={`Title: "{{Title}}" \nTranscript: "{{Transcript}}"\nInstructions: Summarize the above content highlights.`}
+              label="Default Variables"
+              value={`Title: "{{Title}}" \nTranscript: "{{Transcript}}"`}
+              minRows={2}
               disabled
+            />
+            <Input
+              isTextarea
+              label="Prompt for Summary"
+              value={prompt}
+              onChange={e => setPrompt(e.target.value)}
             />
             <Button
               sx={{ fontWeight: 500 }}

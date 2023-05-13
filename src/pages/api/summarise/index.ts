@@ -11,7 +11,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return res.send('Cannot GET /api/summarise');
   }
 
-  const prompt = `Title: ${req.body.title}\nTranscript: ${req.body.transcript}\nInstructions: Summarize the above content highlights.`;
+  const userPrompt =
+    req.body.prompt || 'Summarize the above content highlights.';
+
+  const prompt = `Title: ${req.body.title}\nTranscript: ${req.body.transcript}\nInstructions: ${userPrompt}`;
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: {
