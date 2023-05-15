@@ -10,15 +10,14 @@ import LabelPill from '@/components/base/LabelPill';
 import { removeNewLines, wordsCount } from '@/utils/text-readibility';
 import ChannelDetails from '@/components/yt/ChannelDetails';
 import Metadata from '@/components/yt/Metadata';
-import VideoIFrame from '@/components/yt/VideoIFrame';
 import TranscriptTabs from '@/components/yt/TranscriptTabs';
 import TimeCodedTranscript from '@/components/transcript/TimeCodedTranscript';
 import { TranscriptSub } from '@/interfaces/transcript';
 import PinButton from '@/components/yt/PinButton';
 import { usePinnedVideos } from '@/components/PinnedVideosContext';
 import NotTranscribable from '@/components/NotTrascribable';
-import scrollIntoView from '@/utils/scroll-into-view';
 import Summary from '@/components/transcript/Summary';
+import YouTube from 'react-youtube';
 
 const VideoTranscript = () => {
   const router = useRouter();
@@ -26,10 +25,10 @@ const VideoTranscript = () => {
   const [loading, setLoading] = useState(true);
   const [isTranscribable, setIsTranscribable] = useState(true);
   const [videoData, setVideoData] = useState<Video | undefined>();
-  const [seekTo, setSeekTo] = useState<number>();
   const updateMarkerInterval = useRef<any>(null);
   const [tabValue, setTabValue] = useState(0);
   const { pinVideo, removePinnedVideo, pinnedVideos } = usePinnedVideos();
+  const [youtubePlayer, setYoutubePlayer] = useState<any>(null);
 
   const isVideoPinned = useMemo(() => {
     if (!videoData?.videoDetails) {
@@ -79,14 +78,24 @@ const VideoTranscript = () => {
   };
 
   const handleSegmentClick = (sub: TranscriptSub) => {
-    setSeekTo(sub.start);
+    youtubePlayer?.seekTo(sub.start);
+  };
+
+  const handlePlayerReady = (event: any) => {
+    setYoutubePlayer(event.target);
+  };
+
+  const handlePlayerStop = () => {
+    if (updateMarkerInterval.current) {
+      clearInterval(updateMarkerInterval.current);
+    }
   };
 
   const handlePlayerStart = useCallback(
     (player: any) => {
       const timestampMarkers = document.querySelectorAll('.timestamp-marker');
       updateMarkerInterval.current = setInterval(
-        () => markerInterval(timestampMarkers, player),
+        () => markerInterval(timestampMarkers as any, player),
         100
       );
     },
@@ -124,11 +133,10 @@ const VideoTranscript = () => {
     }
   };
 
-  const handlePlayerStop = () => {
-    if (updateMarkerInterval.current) {
-      clearInterval(updateMarkerInterval.current);
-    }
-  };
+  useEffect(() => {
+    handlePlayerStop();
+    setYoutubePlayer(null);
+  }, [id]);
 
   const handlePinClick = () => {
     if (!videoData?.videoDetails) {
@@ -172,12 +180,35 @@ const VideoTranscript = () => {
             )}
             {!loading && videoData && (
               <Box sx={{ position: 'sticky', top: 20 }}>
-                <VideoIFrame
-                  videoId={videoData.videoDetails.videoId}
-                  seekTo={seekTo}
-                  onPlayerStart={handlePlayerStart}
-                  onPlayerStop={handlePlayerStop}
-                />
+                <Box
+                  sx={{
+                    position: 'relative',
+                    width: '100%',
+                    height: 0,
+                    paddingBottom: '56.25%',
+
+                    iframe: {
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '100%',
+                      visibility: !youtubePlayer && 'hidden',
+                    },
+                  }}
+                >
+                  <YouTube
+                    videoId={videoData.videoDetails.videoId}
+                    opts={{
+                      playerVars: {
+                        playsinline: 1,
+                      },
+                    }}
+                    onReady={handlePlayerReady}
+                    onPause={handlePlayerStop}
+                    onPlay={e => handlePlayerStart(e.target)}
+                  />
+                </Box>
 
                 <Box
                   sx={{

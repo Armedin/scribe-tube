@@ -9,11 +9,11 @@ const VideoIFrame = (props: {
   onPlayerStop?: () => void;
 }) => {
   const { videoId, seekTo: seekProp, onPlayerStart, onPlayerStop } = props;
-  const [player, setPlayer] = useState<any>();
   const [seekTo, setSeekTo] = useState<any>(seekProp);
+  const playerRef = useRef<any>(null);
 
   useEffect(() => {
-    if (!player) {
+    if (!playerRef.current) {
       return;
     }
 
@@ -25,15 +25,15 @@ const VideoIFrame = (props: {
   }, [videoId]);
 
   useEffect(() => {
-    if (!seekTo || !player) {
+    if (!seekTo || !playerRef.current) {
       return;
     }
 
-    player.seekTo(seekTo);
-    player.playVideo();
-  }, [seekTo, player]);
+    playerRef.current.seekTo(seekTo);
+    playerRef.current.playVideo();
+  }, [seekTo, playerRef]);
 
-  useEffect(() => {
+  const load = (videoId: string) => {
     loadSdk().then(YT => {
       const player = new YT.Player('player', {
         videoId,
@@ -46,17 +46,27 @@ const VideoIFrame = (props: {
         },
       });
     });
-  }, []);
+  };
+
+  useEffect(() => {
+    load(videoId);
+
+    return () => {
+      playerRef.current?.stopVideo();
+      playerRef.current = null;
+      onPlayerStop?.();
+    };
+  }, [videoId]);
 
   const onPlayerReady = (event: any) => {
-    setPlayer(event.target);
+    playerRef.current = event.target;
     // event.target.playVideo();
   };
 
   const onPlayerStateChange = (event: any) => {
     if (event.data === YT.PlayerState.PLAYING) {
       // TODO - When navigating away and returning, the player's functions like getcurrenttime are gone...
-      onPlayerStart?.(event.target);
+      onPlayerStart?.(playerRef.current);
     } else {
       onPlayerStop?.();
     }
@@ -73,7 +83,7 @@ const VideoIFrame = (props: {
     >
       <Box
         component="iframe"
-        id="player"
+        id={'player'}
         sx={{
           position: 'absolute',
           top: 0,
