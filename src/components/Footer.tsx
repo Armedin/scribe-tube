@@ -19,6 +19,7 @@ const Footer = () => {
             © ScribeTube - Built and Maintained by{' '}
             <Link
               href="https://majilabs.com/"
+              target="_blank"
               sx={{ color: '#67d697', textDecorationColor: '#67d697' }}
             >
               MajiLabs

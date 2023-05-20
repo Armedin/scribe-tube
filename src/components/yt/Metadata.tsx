@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Fingerprint from '../icons/Fingerprint';
 import LanguageIcon from '../icons/Language';
 import SwitchLanguage from './SwitchLanguage';
+import DownloadButton from './DownloadButton';
 
 const Metadata = ({
   language,

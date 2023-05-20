@@ -18,6 +18,7 @@ import { usePinnedVideos } from '@/components/PinnedVideosContext';
 import NotTranscribable from '@/components/NotTrascribable';
 import Summary from '@/components/transcript/Summary';
 import YouTube from 'react-youtube';
+import DownloadButton from '@/components/yt/DownloadButton';
 
 const VideoTranscript = () => {
   const router = useRouter();
@@ -113,7 +114,6 @@ const VideoTranscript = () => {
       const markerEnd = parseFloat(marker.dataset.end);
       if (currentTime >= markerStart && currentTime <= markerEnd) {
         marker.classList.add('active');
-        // scrollIntoView(marker.parentElement, marker);
         marker.scrollIntoView({ block: 'center' });
         hasMarked = true;
       } else {
@@ -128,7 +128,6 @@ const VideoTranscript = () => {
 
     if (!hasMarked && closestMarker) {
       closestMarker.classList.add('active');
-      // scrollIntoView(closestMarker.parentElement, closestMarker);
       closestMarker.scrollIntoView({ block: 'center' });
     }
   };
@@ -193,7 +192,7 @@ const VideoTranscript = () => {
                       left: 0,
                       width: '100%',
                       height: '100%',
-                      visibility: !youtubePlayer && 'hidden',
+                      visibility: !youtubePlayer ? 'hidden' : 'visible',
                     },
                   }}
                 >
@@ -243,7 +242,11 @@ const VideoTranscript = () => {
                       {wordsCount(transcriptText)} words
                     </LabelPill>
                   </Box>
-                  <Box>
+                  <Box sx={{ display: 'flex', gap: 0.75 }}>
+                    <DownloadButton
+                      transcriptText={transcriptText}
+                      videoDetails={videoData.videoDetails}
+                    />
                     <PinButton
                       onClick={handlePinClick}
                       isPinned={isVideoPinned}
