@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import SearchInput from './base/SearchInput';
 import Bars from './icons/Bars';
 import ClosedCaptioning from './icons/ClosedCaptioning';
+import logo from '../assets/img/logo.png';
 
 const Header = ({
   sidebarOpen,
@@ -32,10 +33,13 @@ const Header = ({
                   display: 'flex',
                   alignItems: 'center',
                   cursor: 'pointer',
+                  img: {
+                    width: 36,
+                  },
                 }}
                 onClick={() => router.push('/')}
               >
-                <ClosedCaptioning />
+                <img src={logo.src} />
                 <Typography sx={{ ml: 1, fontWeight: 500, fontSize: 17 }}>
                   ScribeTube
                 </Typography>
